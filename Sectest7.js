@@ -57,7 +57,6 @@ Lampa.Component.add('music_search_page', function() {
             if (query) {
                 console.log("Ищем музыку: " + query);
 
-                // Переход на страницу с результатами поиска
                 Lampa.Activity.push({
                     url: '',
                     title: 'Результаты поиска: ' + query,
