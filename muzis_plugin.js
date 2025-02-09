@@ -1,38 +1,59 @@
 (function() {
-    const apiUrl = 'https://muzis.ru/api/search.api';
+    console.log("Плагин Muzis загружается...");
 
-    function addMusicSearch() {
+    function addMusicButton() {
         Lampa.Listener.follow('app', function(event) {
             if (event.type === 'ready') {
-                const menu = $('.menu__list').first();
-                const musicButton = $('<li class="menu__item selector focusable"><span>Музыка</span></li>');
+                console.log("Lampa загрузилась, добавляем кнопку в меню...");
 
-                musicButton.on('hover:enter', function() {
-                    Lampa.Activity.push({
-                        url: '',
-                        title: 'Поиск музыки',
-                        component: 'muzis_search'
+                let menu = $('.menu__list').first();
+                let existingButton = menu.find('.menu__item:contains("Музыка")');
+
+                // Проверяем, что кнопка ещё не добавлена
+                if (existingButton.length === 0) {
+                    let musicButton = $('<li class="menu__item selector focusable"><span>Музыка</span></li>');
+
+                    musicButton.on('hover:enter', function() {
+                        console.log("Кнопка 'Музыка' нажата, открываем поиск...");
+                        Lampa.Activity.push({
+                            url: '',
+                            title: 'Поиск музыки',
+                            component: 'muzis_search'
+                        });
                     });
-                });
 
-                menu.append(musicButton);
+                    menu.append(musicButton);
+                    console.log("Кнопка 'Музыка' добавлена!");
+                } else {
+                    console.log("Кнопка 'Музыка' уже есть в меню.");
+                }
             }
         });
     }
 
     function createMusicComponent() {
+        console.log("Регистрируем компонент поиска музыки...");
+
         Lampa.Component.add('muzis_search', {
             start: function() {
-                let html = $('<div class="music-search"><input type="text" placeholder="Введите название трека или исполнителя" class="music-input"/><div class="music-results"></div></div>');
+                console.log("Компонент 'muzis_search' запущен.");
+
+                let html = $(`
+                    <div class="music-search">
+                        <input type="text" placeholder="Введите название трека или исполнителя" class="music-input"/>
+                        <div class="music-results"></div>
+                    </div>
+                `);
+
                 let input = html.find('.music-input');
                 let results = html.find('.music-results');
 
                 input.on('change', function() {
                     let query = input.val().trim();
                     if (query.length > 2) {
-                        console.log("Отправляем запрос:", query);
+                        console.log("Отправляем запрос на поиск:", query);
 
-                        fetch(apiUrl, {
+                        fetch('https://muzis.ru/api/search.api', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json'
@@ -72,6 +93,6 @@
         });
     }
 
-    addMusicSearch();
+    addMusicButton();
     createMusicComponent();
 })();
