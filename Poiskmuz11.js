@@ -17,7 +17,7 @@
 
     function createMusicComponent() {
         console.log("Регистрируем компонент поиска музыки...");
-
+console.log("Попытка рендеринга компонента поиска музыки...");
         Lampa.Component.add('music_search', {
             start: function() {
                 console.log("Компонент 'music_search' стартовал.");
