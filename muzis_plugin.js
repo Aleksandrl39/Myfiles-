@@ -4,7 +4,7 @@
     function addMusicSearch() {
         Lampa.Listener.follow('app', function(event) {
             if (event.type === 'ready') {
-                const menu = Lampa.Template.get('menu');
+                const menu = $('.menu__list').first();
                 const musicButton = $('<li class="menu__item selector focusable"><span>Музыка</span></li>');
 
                 musicButton.on('hover:enter', function() {
@@ -23,13 +23,15 @@
     function createMusicComponent() {
         Lampa.Component.add('muzis_search', {
             start: function() {
-                const html = $('<div class="music-search"><input type="text" placeholder="Введите название трека или исполнителя" class="music-input"/><div class="music-results"></div></div>');
-                const input = html.find('.music-input');
-                const results = html.find('.music-results');
+                let html = $('<div class="music-search"><input type="text" placeholder="Введите название трека или исполнителя" class="music-input"/><div class="music-results"></div></div>');
+                let input = html.find('.music-input');
+                let results = html.find('.music-results');
 
                 input.on('change', function() {
-                    const query = input.val();
+                    let query = input.val().trim();
                     if (query.length > 2) {
+                        console.log("Отправляем запрос:", query);
+
                         fetch(apiUrl, {
                             method: 'POST',
                             headers: {
@@ -39,17 +41,29 @@
                         })
                         .then(response => response.json())
                         .then(data => {
+                            console.log("Ответ от API:", data);
+
                             results.empty();
-                            data.songs.forEach(track => {
-                                const item = $(`<div class="music-item selector focusable"><span>${track.track_name} - ${track.performer}</span></div>`);
-                                item.on('hover:enter', function() {
-                                    const audio = new Audio(`https://f.muzis.ru/${track.file_mp3}`);
-                                    audio.play();
+                            if (data.songs && data.songs.length > 0) {
+                                data.songs.forEach(track => {
+                                    let item = $(`<div class="music-item selector focusable"><span>${track.track_name} - ${track.performer}</span></div>`);
+                                    item.on('hover:enter', function() {
+                                        let audioUrl = `https://f.muzis.ru/${track.file_mp3}`;
+                                        console.log("Запуск трека:", audioUrl);
+
+                                        let audio = new Audio(audioUrl);
+                                        audio.play();
+                                    });
+                                    results.append(item);
                                 });
-                                results.append(item);
-                            });
+                            } else {
+                                results.append('<div class="music-item">Ничего не найдено</div>');
+                            }
                         })
-                        .catch(error => console.error("Ошибка загрузки данных:", error));
+                        .catch(error => {
+                            console.error("Ошибка при загрузке данных:", error);
+                            results.append('<div class="music-item">Ошибка загрузки</div>');
+                        });
                     }
                 });
 
