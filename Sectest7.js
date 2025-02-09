@@ -76,5 +76,5 @@ Lampa.Component.add('music_search_page', function() {
         }
     };
 });
-
+//просто тест
 addMusicButton();
