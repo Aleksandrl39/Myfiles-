@@ -1,0 +1,279 @@
+## Report Info
+
+
+**User Action**: `crash report`  
+**Sender**: `TermuxInstaller`  
+**Report Timestamp**: `2025-02-21 19:11:17.320 UTC`  
+##
+
+## Bootstrap Error
+
+``````
+(-1) Termux Bootstrap Second Stage Command:
+Previous State: `Executing`
+Current State: `Failed`
+
+Stdout: -
+Stderr: -
+Exit Code: -
+
+Error Code: `2`
+Error Message:
+```
+Failed to execute "(-1) Termux Bootstrap Second Stage Command" termux task command
+```
+
+StackTraces:
+```
+java.io.IOException: Cannot run program "/data/data/com.termux/files/usr/etc/termux/bootstrap/termux-bootstrap-second-stage.sh" (in directory "/data/data/com.termux/files/home"): error=13, Permission denied
+	at java.lang.ProcessBuilder.start(ProcessBuilder.java:1050)
+	at java.lang.Runtime.exec(Runtime.java:712)
+	at com.termux.shared.shell.TermuxTask.execute(TermuxTask.java:96)
+	at com.termux.app.TermuxInstaller$1.run(TermuxInstaller.java:224)
+Caused by: java.io.IOException: error=13, Permission denied
+	at java.lang.UNIXProcess.forkAndExec(Native Method)
+	at java.lang.UNIXProcess.<init>(UNIXProcess.java:133)
+	at java.lang.ProcessImpl.start(ProcessImpl.java:141)
+	at java.lang.ProcessBuilder.start(ProcessBuilder.java:1029)
+	... 3 more
+
+```
+
+``````
+
+## Termux Files Info
+
+
+**TERMUX_REQUIRED_FILES_DIR_PATH ($PREFIX)**: `/data/data/com.termux/files`  
+**ANDROID_ASSIGNED_FILES_DIR_PATH**: `/data/user/0/com.termux/files`  
+
+```
+$ echo 'ls info:'
+/system/bin/ls -lhdZ '/data/data' '/data/user/0' '/data/data/com.termux' '/data/user/0/com.termux' '/data/data/com.termux/files' '/data/user/0/com.termux/files' '/data/user/0/com.termux/files' '/data/user/com.termux/files' '/data/data/com.termux/files/usr-staging' '/data/data/com.termux/files/usr' '/data/data/com.termux/files/home' '/data/data/com.termux/files/usr/bin/login' 2>&1
+echo; echo 'mount info:'
+/system/bin/grep -E '( /data )|( /data/data )|( /data/user/[0-9]+ )' /proc/self/mountinfo 2>&1 | /system/bin/grep -v '/data_mirror' 2>&1
+
+ls info:
+ls: /data/user/com.termux/files: No such file or directory
+ls: /data/data/com.termux/files/usr-staging: No such file or directory
+ls: /data/data/com.termux/files/usr: No such file or directory
+ls: /data/data/com.termux/files/usr/bin/login: No such file or directory
+drwxrwx--x 364 system  system  u:object_r:system_data_file:s0:c512,c768         52K 2025-02-21 22:10 /data/data
+drwx------   6 u0_a290 u0_a290 u:object_r:app_data_file:s0:c34,c257,c512,c768  3.3K 2025-02-21 22:10 /data/data/com.termux
+drwxrwx--x   3 u0_a290 u0_a290 u:object_r:app_data_file:s0:c34,c257,c512,c768  3.3K 2025-02-21 22:11 /data/data/com.termux/files
+drwx------   2 u0_a290 u0_a290 u:object_r:app_data_file:s0:c34,c257,c512,c768  3.3K 2025-02-21 22:11 /data/data/com.termux/files/home
+drwxrwx--x 364 system  system  u:object_r:system_data_file:s0:c512,c768         52K 2025-02-21 22:10 /data/user/0
+drwx------   6 u0_a290 u0_a290 u:object_r:app_data_file:s0:c34,c257,c512,c768  3.3K 2025-02-21 22:10 /data/user/0/com.termux
+drwxrwx--x   3 u0_a290 u0_a290 u:object_r:app_data_file:s0:c34,c257,c512,c768  3.3K 2025-02-21 22:11 /data/user/0/com.termux/files
+drwxrwx--x   3 u0_a290 u0_a290 u:object_r:app_data_file:s0:c34,c257,c512,c768  3.3K 2025-02-21 22:11 /data/user/0/com.termux/files
+
+mount info:
+7788 7681 253:10 / /data rw,nosuid,nodev,noatime master:34 - f2fs /dev/block/dm-10 rw,lazytime,seclabel,background_gc=on,discard,no_heap,user_xattr,inline_xattr,acl,inline_data,inline_dentry,extent_cache,mode=adaptive,active_logs=6,reserve_root=25440,resuid=0,resgid=1065,inlinecrypt,alloc_mode=default,fsync_mode=posix,compress_algorithm=lz4,compress_log_size=2,compress_extension=apk,compress_extension=so,compress_mode=fs
+7789 7788 253:10 /data /data/user/0 rw,nosuid,nodev,noatime master:34 - f2fs /dev/block/dm-10 rw,lazytime,seclabel,background_gc=on,discard,no_heap,user_xattr,inline_xattr,acl,inline_data,inline_dentry,extent_cache,mode=adaptive,active_logs=6,reserve_root=25440,resuid=0,resgid=1065,inlinecrypt,alloc_mode=default,fsync_mode=posix,compress_algorithm=lz4,compress_log_size=2,compress_extension=apk,compress_extension=so,compress_mode=fs
+
+```
+##
+
+
+## Logcat Dump
+
+
+
+`````````
+$ /system/bin/logcat -d -t 3000 2>&1
+--------- beginning of main
+02-21 22:10:58.918 16872 16872 I libc    : SetHeapTaggingLevel: tag level set to 0
+02-21 22:10:58.916 16872 16872 W main    : type=1400 audit(0.0:616366): avc: denied { read } for name="u:object_r:vendor_memfusion_size_prop:s0" dev="tmpfs" ino=2679 scontext=u:r:untrusted_app:s0:c34,c257,c512,c768 tcontext=u:object_r:vendor_memfusion_size_prop:s0 tclass=file permissive=0 app=com.termux.gui
+02-21 22:10:58.916 16872 16872 W main    : type=1400 audit(0.0:616367): avc: denied { read } for name="u:object_r:vendor_memfusion_state_prop:s0" dev="tmpfs" ino=2680 scontext=u:r:untrusted_app:s0:c34,c257,c512,c768 tcontext=u:object_r:vendor_memfusion_state_prop:s0 tclass=file permissive=0 app=com.termux.gui
+02-21 22:10:58.925 16872 16872 I com.termux: Using CollectorTypeCC GC.
+02-21 22:10:58.931 16872 16872 E com.termux: Not starting debugger since process cannot load the jdwp agent.
+02-21 22:10:59.015 16872 16872 I LoadedApk: No resource references to update in package com.transsion.theme.icon
+02-21 22:10:59.115 16872 16891 I libMEOW_gift: open /data/performance/gift/arc.ini
+02-21 22:10:59.115 16872 16891 E QT      : [QT]file does not exist
+02-21 22:10:59.169 16872 16872 W Termux:SharedProperties: Not loading properties since file is null
+02-21 22:10:59.364 16872 16872 I SurfaceFactory: [static] sSurfaceFactory = com.transsion.rt.SurfaceFactoryImpl@bf265a1
+02-21 22:10:59.366 16872 16872 I MsyncFactory: [static] sMsyncFactory = com.mediatek.view.impl.MsyncFactoryImpl@cb283c6
+02-21 22:10:59.372 16872 16872 W libc    : Access denied finding property "ro.vendor.scaler_version"
+02-21 22:10:59.373 16872 16872 W libc    : Access denied finding property "ro.vendor.scaler_version"
+02-21 22:10:59.410 16872 16872 I PowerHalWrapper: PowerHalWrapper.getInstance 
+02-21 22:10:59.479 16872 16872 I BufferQueueConsumer: [](id:41e800000000,api:0,p:-1,c:16872) connect: controlledByApp=false
+02-21 22:10:59.482 16872 16872 I BLASTBufferQueue: [ViewRootImpl[TermuxActivity]#0] constructor()
+02-21 22:10:59.515 16872 16903 I Codec2Client: Available Codec2 services: "default" "software"
+02-21 22:10:59.523 16872 16890 E OpenGLRenderer: Device claims wide gamut support, cannot find matching config, error = EGL_SUCCESS
+02-21 22:10:59.523 16872 16890 W OpenGLRenderer: Failed to initialize 101010-2 format, error = EGL_SUCCESS
+02-21 22:10:59.543 16872 16890 I BufferQueueProducer: [ViewRootImpl[TermuxActivity]#0(BLAST Consumer)0](id:41e800000000,api:1,p:16872,c:16872) connect: api=1 producerControlledByApp=true
+02-21 22:10:59.553 16872 16903 I CCodec  : setting up 'default' as default (vendor) store
+02-21 22:10:59.573 16872 16890 I mali    : [DebugProp] GPU Debug-Mechanism Disable !
+02-21 22:10:59.718 16872 16903 I CCodec  : Created component [c2.android.vorbis.decoder]
+02-21 22:10:59.731 16872 16903 I CCodecConfig: query failed after returning 7 values (BAD_INDEX)
+02-21 22:10:59.733 16872 16903 W Codec2Client: query -- param skipped: index = 1107298332.
+02-21 22:10:59.733 16872 16903 I CCodecConfig: query failed after returning 7 values (BAD_INDEX)
+02-21 22:10:59.736 16872 16903 W Codec2Client: query -- param skipped: index = 1342179345.
+02-21 22:10:59.736 16872 16903 W Codec2Client: query -- param skipped: index = 2415921170.
+02-21 22:10:59.742 16872 16903 I CCodecBufferChannel: [c2.android.vorbis.decoder#852] Created output block pool with allocatorID 16 => poolID 764 - OK
+02-21 22:10:59.752 16872 16903 E ion     : ioctl c0044901 failed with code -1: Invalid argument
+02-21 22:10:59.783 16872 16903 I hw-BpHwBinder: onLastStrongRef automatically unlinking death recipients
+02-21 22:10:59.992 16872 16890 E OpenGLRenderer: fbcNotifyFrameComplete error: undefined symbol: fbcNotifyFrameComplete
+02-21 22:10:59.992 16872 16890 E OpenGLRenderer: fbcNotifyNoRender error: undefined symbol: fbcNotifyNoRender
+02-21 22:11:00.033 16872 16872 I Choreographer: Skipped 35 frames!  The application may be doing too much work on its main thread.
+02-21 22:11:00.033 16872 16929 I Termux:TermuxInstaller: Installing Termux bootstrap packages.
+02-21 22:11:00.036 16872 16929 I Termux:TermuxInstaller: Extracting bootstrap zip to prefix staging directory "/data/data/com.termux/files/usr-staging".
+02-21 22:11:00.048 16872 16872 I BufferQueueConsumer: [](id:41e800000001,api:0,p:-1,c:16872) connect: controlledByApp=false
+02-21 22:11:00.049 16872 16872 I BLASTBufferQueue: [ViewRootImpl[TermuxActivity]#1] constructor()
+02-21 22:11:00.051 16872 16890 I BufferQueueProducer: [ViewRootImpl[TermuxActivity]#1(BLAST Consumer)1](id:41e800000001,api:1,p:16872,c:16872) connect: api=1 producerControlledByApp=true
+02-21 22:11:00.108 16872 16872 W InputMethodManager: Ignoring showSoftInput() as view=com.termux.view.TerminalView{5b23e22 VFED.V.L. .F...... 0,0-1064,2086 #7f080191 app:id/terminal_view} is not served.
+02-21 22:11:00.109 16872 16872 W InputMethodManager: Ignoring showSoftInput() as view=com.termux.view.TerminalView{5b23e22 VFED.V.L. .F...... 0,0-1064,2086 #7f080191 app:id/terminal_view} is not served.
+02-21 22:11:02.572 16872 16929 I Termux:TermuxInstaller: Moving termux prefix staging to prefix directory.
+02-21 22:11:02.572 16872 16929 I Termux:TermuxInstaller: Running Termux bootstrap second stage.
+02-21 22:11:03.957 16872 16929 E Termux:TermuxInstaller: Bootstrap Error:
+02-21 22:11:03.957 16872 16929 E Termux:TermuxInstaller: ``````
+02-21 22:11:03.957 16872 16929 E Termux:TermuxInstaller: (-1) Termux Bootstrap Second Stage Command:
+02-21 22:11:03.957 16872 16929 E Termux:TermuxInstaller: Previous State: `Executing`
+02-21 22:11:03.957 16872 16929 E Termux:TermuxInstaller: Current State: `Failed`
+02-21 22:11:03.957 16872 16929 E Termux:TermuxInstaller: 
+02-21 22:11:03.957 16872 16929 E Termux:TermuxInstaller: Stdout: -
+02-21 22:11:03.957 16872 16929 E Termux:TermuxInstaller: Stderr: -
+02-21 22:11:03.957 16872 16929 E Termux:TermuxInstaller: Exit Code: -
+02-21 22:11:03.957 16872 16929 E Termux:TermuxInstaller: 
+02-21 22:11:03.957 16872 16929 E Termux:TermuxInstaller: Error Code: `2`
+02-21 22:11:03.957 16872 16929 E Termux:TermuxInstaller: Error Message:
+02-21 22:11:03.957 16872 16929 E Termux:TermuxInstaller: ```
+02-21 22:11:03.957 16872 16929 E Termux:TermuxInstaller: Failed to execute "(-1) Termux Bootstrap Second Stage Command" termux task command
+02-21 22:11:03.957 16872 16929 E Termux:TermuxInstaller: ```
+02-21 22:11:03.957 16872 16929 E Termux:TermuxInstaller: 
+02-21 22:11:03.957 16872 16929 E Termux:TermuxInstaller: StackTraces:
+02-21 22:11:03.957 16872 16929 E Termux:TermuxInstaller: ```
+02-21 22:11:03.957 16872 16929 E Termux:TermuxInstaller: java.io.IOException: Cannot run program "/data/data/com.termux/files/usr/etc/termux/bootstrap/termux-bootstrap-second-stage.sh" (in directory "/data/data/com.termux/files/home"): error=13, Permission denied
+02-21 22:11:03.957 16872 16929 E Termux:TermuxInstaller: 	at java.lang.ProcessBuilder.start(ProcessBuilder.java:1050)
+02-21 22:11:03.957 16872 16929 E Termux:TermuxInstaller: 	at java.lang.Runtime.exec(Runtime.java:712)
+02-21 22:11:03.957 16872 16929 E Termux:TermuxInstaller: 	at com.termux.shared.shell.TermuxTask.execute(TermuxTask.java:96)
+02-21 22:11:03.957 16872 16929 E Termux:TermuxInstaller: 	at com.termux.app.TermuxInstaller$1.run(TermuxInstaller.java:224)
+02-21 22:11:03.957 16872 16929 E Termux:TermuxInstaller: Caused by: java.io.IOException: error=13, Permission denied
+02-21 22:11:03.957 16872 16929 E Termux:TermuxInstaller: 	at java.lang.UNIXProcess.forkAndExec(Native Method)
+02-21 22:11:03.957 16872 16929 E Termux:TermuxInstaller: 	at java.lang.UNIXProcess.<init>(UNIXProcess.java:133)
+02-21 22:11:03.957 16872 16929 E Termux:TermuxInstaller: 	at java.lang.ProcessImpl.start(ProcessImpl.java:141)
+02-21 22:11:03.957 16872 16929 E Termux:TermuxInstaller: 	at java.lang.ProcessBuilder.start(ProcessBuilder.java:1029)
+02-21 22:11:03.957 16872 16929 E Termux:TermuxInstaller: 	... 3 more
+02-21 22:11:03.957 16872 16929 E Termux:TermuxInstaller: 
+02-21 22:11:03.957 16872 16929 E Termux:TermuxInstaller: ```
+02-21 22:11:03.957 16872 16929 E Termux:TermuxInstaller: 
+02-21 22:11:03.957 16872 16929 E Termux:TermuxInstaller: ``````
+02-21 22:11:04.340 16952 16952 W getprop : type=1400 audit(0.0:616384): avc: denied { read } for name="u:object_r:vendor_memfusion_size_prop:s0" dev="tmpfs" ino=2679 scontext=u:r:untrusted_app:s0:c34,c257,c512,c768 tcontext=u:object_r:vendor_memfusion_size_prop:s0 tclass=file permissive=0 app=com.termux.gui
+02-21 22:11:04.340 16952 16952 W getprop : type=1400 audit(0.0:616385): avc: denied { read } for name="u:object_r:vendor_memfusion_state_prop:s0" dev="tmpfs" ino=2680 scontext=u:r:untrusted_app:s0:c34,c257,c512,c768 tcontext=u:object_r:vendor_memfusion_state_prop:s0 tclass=file permissive=0 app=com.termux.gui
+02-21 22:11:04.352 16952 16952 W getprop : type=1400 audit(0.0:616386): avc: denied { read } for name="u:object_r:vendor_uxcompaction_enable_prop:s0" dev="tmpfs" ino=2919 scontext=u:r:untrusted_app:s0:c34,c257,c512,c768 tcontext=u:object_r:vendor_uxcompaction_enable_prop:s0 tclass=file permissive=0 app=com.termux.gui
+02-21 22:11:04.478 16872 16890 I BufferQueueProducer: [ViewRootImpl[TermuxActivity]#1(BLAST Consumer)1](id:41e800000001,api:1,p:16872,c:16872) disconnect: api 1
+02-21 22:11:04.508 16872 16881 I BLASTBufferQueue: [ViewRootImpl[TermuxActivity]#1] destructor()
+02-21 22:11:04.509 16872 16881 I BufferQueueConsumer: [ViewRootImpl[TermuxActivity]#1(BLAST Consumer)1](id:41e800000001,api:0,p:-1,c:16872) disconnect
+02-21 22:11:04.513 16872 16872 I BufferQueueConsumer: [](id:41e800000002,api:0,p:-1,c:16872) connect: controlledByApp=false
+02-21 22:11:04.514 16872 16872 I BLASTBufferQueue: [ViewRootImpl[TermuxActivity]#2] constructor()
+02-21 22:11:04.516 16872 16890 I BufferQueueProducer: [ViewRootImpl[TermuxActivity]#2(BLAST Consumer)2](id:41e800000002,api:1,p:16872,c:16872) connect: api=1 producerControlledByApp=true
+02-21 22:11:04.683 16872 16925 I BLASTBufferQueue: releaseBufferCallbackThunk bufferId:72464688218119 framenumber:266 blastBufferQueue is dead
+02-21 22:11:07.787 16872 16890 I BufferQueueProducer: [ViewRootImpl[TermuxActivity]#2(BLAST Consumer)2](id:41e800000002,api:1,p:16872,c:16872) disconnect: api 1
+02-21 22:11:07.809 16872 16925 I BLASTBufferQueue: [ViewRootImpl[TermuxActivity]#2] destructor()
+02-21 22:11:07.809 16872 16925 I BufferQueueConsumer: [ViewRootImpl[TermuxActivity]#2(BLAST Consumer)2](id:41e800000002,api:0,p:-1,c:16872) disconnect
+02-21 22:11:07.990 16872 16881 I BLASTBufferQueue: releaseBufferCallbackThunk bufferId:72464688218123 framenumber:30 blastBufferQueue is dead
+02-21 22:11:08.366 16872 16890 I BufferQueueProducer: [ViewRootImpl[TermuxActivity]#0(BLAST Consumer)0](id:41e800000000,api:1,p:16872,c:16872) disconnect: api 1
+02-21 22:11:08.374 16872 16872 I BLASTBufferQueue: [ViewRootImpl[TermuxActivity]#0] destructor()
+02-21 22:11:08.374 16872 16872 I BufferQueueConsumer: [ViewRootImpl[TermuxActivity]#0(BLAST Consumer)0](id:41e800000000,api:0,p:-1,c:16872) disconnect
+02-21 22:11:08.418 16872 16925 I BLASTBufferQueue: releaseBufferCallbackThunk bufferId:72464688218115 framenumber:30 blastBufferQueue is dead
+02-21 22:11:11.831 16872 16876 W com.termux: Cleared Reference was only reachable from finalizer (only reported once)
+02-21 22:11:13.528 16872 16872 W Termux:SharedProperties: Not loading properties since file is null
+02-21 22:11:13.598 16872 16995 I Termux:TermuxInstaller: Installing Termux bootstrap packages.
+02-21 22:11:13.600 16872 16995 I Termux:TermuxInstaller: Extracting bootstrap zip to prefix staging directory "/data/data/com.termux/files/usr-staging".
+02-21 22:11:13.638 16872 16994 I CCodec  : setting up 'default' as default (vendor) store
+02-21 22:11:13.644 16872 16994 I CCodec  : Created component [c2.android.vorbis.decoder]
+02-21 22:11:13.651 16872 16872 I BufferQueueConsumer: [](id:41e800000003,api:0,p:-1,c:16872) connect: controlledByApp=false
+02-21 22:11:13.653 16872 16872 I BLASTBufferQueue: [ViewRootImpl[TermuxActivity]#3] constructor()
+02-21 22:11:13.653 16872 16994 I CCodecConfig: query failed after returning 7 values (BAD_INDEX)
+02-21 22:11:13.653 16872 16890 I BufferQueueProducer: [ViewRootImpl[TermuxActivity]#3(BLAST Consumer)3](id:41e800000003,api:1,p:16872,c:16872) connect: api=1 producerControlledByApp=true
+02-21 22:11:13.657 16872 16994 W Codec2Client: query -- param skipped: index = 1107298332.
+02-21 22:11:13.658 16872 16994 I CCodecConfig: query failed after returning 7 values (BAD_INDEX)
+02-21 22:11:13.660 16872 16994 W Codec2Client: query -- param skipped: index = 1342179345.
+02-21 22:11:13.660 16872 16994 W Codec2Client: query -- param skipped: index = 2415921170.
+02-21 22:11:13.671 16872 16994 I CCodecBufferChannel: [c2.android.vorbis.decoder#948] Created output block pool with allocatorID 16 => poolID 766 - OK
+02-21 22:11:13.687 16872 16872 I BufferQueueConsumer: [](id:41e800000004,api:0,p:-1,c:16872) connect: controlledByApp=false
+02-21 22:11:13.689 16872 16872 I BLASTBufferQueue: [ViewRootImpl[TermuxActivity]#4] constructor()
+02-21 22:11:13.691 16872 16890 I BufferQueueProducer: [ViewRootImpl[TermuxActivity]#4(BLAST Consumer)4](id:41e800000004,api:1,p:16872,c:16872) connect: api=1 producerControlledByApp=true
+02-21 22:11:13.783 16872 16994 I hw-BpHwBinder: onLastStrongRef automatically unlinking death recipients
+02-21 22:11:13.899 16872 16872 W InputMethodManager: Ignoring showSoftInput() as view=com.termux.view.TerminalView{b49e58a VFED.V.L. .F...... 0,0-1064,2086 #7f080191 app:id/terminal_view} is not served.
+02-21 22:11:14.099 16872 16872 W InputMethodManager: Ignoring showSoftInput() as view=com.termux.view.TerminalView{b49e58a VFED.V.L. .F...... 0,0-1064,2086 #7f080191 app:id/terminal_view} is not served.
+02-21 22:11:16.779 16872 16995 I Termux:TermuxInstaller: Moving termux prefix staging to prefix directory.
+02-21 22:11:16.780 16872 16995 I Termux:TermuxInstaller: Running Termux bootstrap second stage.
+02-21 22:11:17.065 16872 16995 E Termux:TermuxInstaller: Bootstrap Error:
+02-21 22:11:17.065 16872 16995 E Termux:TermuxInstaller: ``````
+02-21 22:11:17.065 16872 16995 E Termux:TermuxInstaller: (-1) Termux Bootstrap Second Stage Command:
+02-21 22:11:17.065 16872 16995 E Termux:TermuxInstaller: Previous State: `Executing`
+02-21 22:11:17.065 16872 16995 E Termux:TermuxInstaller: Current State: `Failed`
+02-21 22:11:17.065 16872 16995 E Termux:TermuxInstaller: 
+02-21 22:11:17.065 16872 16995 E Termux:TermuxInstaller: Stdout: -
+02-21 22:11:17.065 16872 16995 E Termux:TermuxInstaller: Stderr: -
+02-21 22:11:17.065 16872 16995 E Termux:TermuxInstaller: Exit Code: -
+02-21 22:11:17.065 16872 16995 E Termux:TermuxInstaller: 
+02-21 22:11:17.065 16872 16995 E Termux:TermuxInstaller: Error Code: `2`
+02-21 22:11:17.065 16872 16995 E Termux:TermuxInstaller: Error Message:
+02-21 22:11:17.065 16872 16995 E Termux:TermuxInstaller: ```
+02-21 22:11:17.065 16872 16995 E Termux:TermuxInstaller: Failed to execute "(-1) Termux Bootstrap Second Stage Command" termux task command
+02-21 22:11:17.065 16872 16995 E Termux:TermuxInstaller: ```
+02-21 22:11:17.065 16872 16995 E Termux:TermuxInstaller: 
+02-21 22:11:17.065 16872 16995 E Termux:TermuxInstaller: StackTraces:
+02-21 22:11:17.065 16872 16995 E Termux:TermuxInstaller: ```
+02-21 22:11:17.065 16872 16995 E Termux:TermuxInstaller: java.io.IOException: Cannot run program "/data/data/com.termux/files/usr/etc/termux/bootstrap/termux-bootstrap-second-stage.sh" (in directory "/data/data/com.termux/files/home"): error=13, Permission denied
+02-21 22:11:17.065 16872 16995 E Termux:TermuxInstaller: 	at java.lang.ProcessBuilder.start(ProcessBuilder.java:1050)
+02-21 22:11:17.065 16872 16995 E Termux:TermuxInstaller: 	at java.lang.Runtime.exec(Runtime.java:712)
+02-21 22:11:17.065 16872 16995 E Termux:TermuxInstaller: 	at com.termux.shared.shell.TermuxTask.execute(TermuxTask.java:96)
+02-21 22:11:17.065 16872 16995 E Termux:TermuxInstaller: 	at com.termux.app.TermuxInstaller$1.run(TermuxInstaller.java:224)
+02-21 22:11:17.065 16872 16995 E Termux:TermuxInstaller: Caused by: java.io.IOException: error=13, Permission denied
+02-21 22:11:17.065 16872 16995 E Termux:TermuxInstaller: 	at java.lang.UNIXProcess.forkAndExec(Native Method)
+02-21 22:11:17.065 16872 16995 E Termux:TermuxInstaller: 	at java.lang.UNIXProcess.<init>(UNIXProcess.java:133)
+02-21 22:11:17.065 16872 16995 E Termux:TermuxInstaller: 	at java.lang.ProcessImpl.start(ProcessImpl.java:141)
+02-21 22:11:17.065 16872 16995 E Termux:TermuxInstaller: 	at java.lang.ProcessBuilder.start(ProcessBuilder.java:1029)
+02-21 22:11:17.065 16872 16995 E Termux:TermuxInstaller: 	... 3 more
+02-21 22:11:17.065 16872 16995 E Termux:TermuxInstaller: 
+02-21 22:11:17.065 16872 16995 E Termux:TermuxInstaller: ```
+02-21 22:11:17.065 16872 16995 E Termux:TermuxInstaller: 
+02-21 22:11:17.065 16872 16995 E Termux:TermuxInstaller: ``````
+
+`````````
+##
+
+
+## Termux App Info
+
+**APP_NAME**: `Termux`  
+**PACKAGE_NAME**: `com.termux`  
+**VERSION_NAME**: `0.118.1`  
+**VERSION_CODE**: `1000`  
+**TARGET_SDK**: `28`  
+**IS_DEBUGGABLE_BUILD**: `false`  
+**APK_RELEASE**: `F-Droid`  
+**SIGNING_CERTIFICATE_SHA256_DIGEST**: `228FB2CFE90831C1499EC3CCAF61E96E8E1CE70766B9474672CE427334D41C42`  
+##
+
+
+## Device Info
+
+### Software
+
+**OS_VERSION**: `4.19.191-g20c2dd72f5fd-dirty`  
+**SDK_INT**: `31`  
+**RELEASE**: `12`  
+**ID**: `SP1A.210812.016`  
+**DISPLAY**: `X663-H6915ABCEFGHIO-S-GL-230918V670`  
+**INCREMENTAL**: `230918V670`  
+**SECURITY_PATCH**: `2023-09-05`  
+**IS_DEBUGGABLE**: `0`  
+**IS_TREBLE_ENABLED**: `true`  
+**TYPE**: `user`  
+**TAGS**: `release-keys`  
+
+### Hardware
+
+**MANUFACTURER**: `INFINIX MOBILITY LIMITED`  
+**BRAND**: `Infinix`  
+**MODEL**: `Infinix X663`  
+**PRODUCT**: `X663-GL`  
+**BOARD**: `Infinix-X663`  
+**HARDWARE**: `mt6769`  
+**DEVICE**: `Infinix-X663`  
+**SUPPORTED_ABIS**: `arm64-v8a, armeabi-v7a, armeabi`  
+##
