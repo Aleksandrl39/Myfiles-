@@ -5,15 +5,21 @@
         let url = 'https://torapi.vercel.app/api/search/title/all?query=' + encodeURIComponent(params.query)
 
         network.silent(url, (json)=>{
-            let results = json.map(item => ({
-                title: item.Name,
-                poster: '', // В API нет изображений, можно оставить пустым
-                description: `Размер: ${item.Size}, Раздают: ${item.Seeds}, Качают: ${item.Peers}`,
-                url: item.Url, // Можно использовать для перехода на страницу раздачи
-                torrent: item.Torrent // Прямая ссылка на торрент
-            }))
-            oncomplite(results)
+            if (Array.isArray(json)) {
+                let results = json.map(item => ({
+                    title: item.Name,
+                    poster: '',
+                    description: `Размер: ${item.Size}, Раздают: ${item.Seeds}, Качают: ${item.Peers}`,
+                    url: item.Url,
+                    torrent: item.Torrent
+                }))
+                oncomplite(results)
+            } else {
+                console.error("Ошибка: API вернуло неожиданные данные", json)
+                oncomplite([])
+            }
         }, ()=>{
+            console.error("Ошибка сети или API недоступен")
             oncomplite([])
         })
     }
